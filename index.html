@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Camila 💘</title>
+
+<style>
+  :root{
+    --pink:#ff2e88;
+    --pink2:#ff66aa;
+    --glass: rgba(0,0,0,.72);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  /* ✅ Ahora SÍ permite subir/bajar */
+  body{
+    font-family: Georgia, serif;
+    background: radial-gradient(circle at top, #1b0020, #000 60%);
+    color:#fff;
+    min-height:100vh;
+    overflow-y:auto;          /* ✅ SCROLL */
+    overflow-x:hidden;
+    position:relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Contenedor principal centrado pero con scroll */
+  .page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;   /* ✅ para que no corte arriba */
+    padding:24px 0;
+    position:relative;
+  }
+
+  /* --- Estrellas --- */
+  .star{
+    position:absolute;
+    width:2px;height:2px;
+    background:#fff;
+    opacity:.7;
+    animation: blink 2.2s infinite alternate;
+    z-index:0;
+    pointer-events:none;
+  }
+  @keyframes blink{from{opacity:.15;}to{opacity:1;}}
+
+  .constellation{
+    position:fixed;           /* ✅ fijo, no se va al scrollear */
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:20px;
+    letter-spacing:6px;
+    opacity:.16;
+    z-index:0;
+    user-select:none;
+    white-space:nowrap;
+    pointer-events:none;
+  }
+
+  /* --- Caja --- */
+  .box{
+    width:min(560px, 92vw);
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,.12);
+    padding:22px 18px;
+    border-radius:22px;
+    text-align:center;
+    box-shadow: 0 0 40px rgba(255,0,120,.35);
+    z-index:2;
+    backdrop-filter: blur(8px);
+    margin: 18px 0;
+  }
+
+  .hidden{display:none !important;}
+
+  h1,h2,h3{font-weight:700;}
+  h2{font-size:22px; margin-bottom:10px;}
+  p{line-height:1.55; font-size:16px;}
+
+  .glow{
+    color: var(--pink);
+    text-shadow: 0 0 14px rgba(255,46,136,.55);
+    animation: glow 2.2s infinite alternate;
+  }
+  @keyframes glow{
+    from{ text-shadow:0 0 10px rgba(255,46,136,.4); }
+    to{ text-shadow:0 0 28px rgba(255,102,170,.8); }
+  }
+
+  /* --- Login --- */
+  #login h2{margin-bottom:12px;}
+  #codigo{
+    width:min(360px, 84vw);
+    padding:12px 14px;
+    border-radius:14px;
+    border: none;
+    outline:none;
+    font-size:16px;
+    text-align:center;
+  }
+
+  .btn{
+    margin-top:12px;
+    padding:12px 22px;
+    border:none;
+    border-radius:999px;
+    font-size:16px;
+    cursor:pointer;
+    transition:.25s;
+  }
+  .btnPrimary{ background: var(--pink); color:#fff; }
+  .btnLight{ background:#fff; color:#000; }
+  .btn:active{ transform: scale(.98); }
+
+  #error{
+    margin-top:10px;
+    color:#ff9aa8;
+    min-height:22px;
+    font-size:14px;
+  }
+
+  /* --- Imágenes carta --- */
+  .topImgs{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .topImgs img{
+    width:110px;
+    max-width:35vw;
+    height:auto;
+    display:block;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
+  }
+
+  /* --- Poema --- */
+  #poema{
+    margin:10px auto 14px;
+    max-width:520px;
+    white-space:pre-wrap;
+  }
+
+  /* --- Contador --- */
+  #contador{
+    margin-top:6px;
+    font-size:15px;
+    opacity:.95;
+  }
+
+  /* --- Botones Sí/No --- */
+  .choices{
+    margin-top:16px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    position:relative;
+  }
+  #si{ background:var(--pink); color:#fff; }
+  #no{ background:#3a3a3a; color:#fff; position:relative; }
+
+  /* --- Corazones flotando --- */
+  .heart{
+    position:fixed;
+    bottom:-30px;
+    z-index:1;
+    animation: floatUp 6s linear forwards;
+    pointer-events:none;
+  }
+  @keyframes floatUp{
+    from{ transform:translateY(0); opacity:.95; }
+    to{ transform:translateY(-120vh); opacity:0; }
+  }
+
+  /* --- Pétalos cayendo --- */
+  .petal{
+    position:fixed;
+    top:-30px;
+    width:12px;height:12px;
+    background:pink;
+    opacity:.75;
+    border-radius: 60% 40% 60% 0;
+    transform: rotate(20deg);
+    z-index:1;
+    animation: fallDown 8s linear forwards;
+    pointer-events:none;
+  }
+  @keyframes fallDown{
+    from{ transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:.9; }
+    to{ transform:translateY(120vh) translateX(40px) rotate(360deg); opacity:0; }
+  }
+
+  /* --- Fuegos artificiales --- */
+  .fire{
+    position:fixed;
+    width:6px;height:6px;
+    border-radius:50%;
+    z-index:5;
+    animation: explode 1s ease-out forwards;
+    pointer-events:none;
+  }
+  @keyframes explode{
+    0%{ transform:scale(1); opacity:1; }
+    100%{ transform:scale(18); opacity:0; }
+  }
+
+  .ring{
+    font-size:60px;
+    margin:8px 0;
+    animation:ring 1s ease-in-out infinite alternate;
+  }
+  @keyframes ring{
+    from{ transform:scale(1); }
+    to{ transform:scale(1.15); }
+  }
+
+  /* --- Modal Galería --- */
+  #modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.86);
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+  }
+  #modalContent{
+    width:min(640px, 96vw);
+    background: rgba(8,8,8,.96);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:22px;
+    padding:12px;
+    box-shadow: 0 0 40px rgba(255,0,120,.25);
+    position:relative;
+  }
+  #cerrar{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:14px;
+    background:#222;
+    color:#fff;
+    font-size:18px;
+    cursor:pointer;
+  }
+  #slideBox{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+    margin-top:46px;
+  }
+  #slideImg{
+    width:100%;
+    max-height:70vh;
+    object-fit:contain;
+    border-radius:18px;
+    background:#000;
+  }
+  #prev,#next{
+    width:44px;height:44px;
+    border:none;
+    border-radius:14px;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    font-size:26px;
+    cursor:pointer;
+    flex: 0 0 auto;
+  }
+  #slideInfo{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:10px;
+    flex-wrap:wrap;
+  }
+  #slideCount{opacity:.85;font-size:14px;}
+
+  @media (max-width:420px){
+    .constellation{font-size:18px; letter-spacing:4px;}
+    p{font-size:15px;}
+  }
+</style>
+</head>
+
+<body>
+
+<div class="constellation">✦ C A M I L A ✦</div>
+
+<div class="page">
+
+  <!-- LOGIN -->
+  <div class="box" id="login">
+    <h2>Ingresa nuestra fecha especial 💘</h2>
+    <input id="codigo" type="text" placeholder="04/04/2025" inputmode="numeric" />
+    <br />
+    <button class="btn btnPrimary" id="btnEntrar">Entrar</button>
+    <div id="error"></div>
+  </div>
+
+  <!-- CARTA -->
+  <div class="box hidden" id="carta">
+    <div class="topImgs">
+      <img src="pareja.png" alt="Nosotros">
+      <img src="conejitos.png" alt="Amor">
+    </div>
+
+    <h2>Para <span class="glow">Camila</span> ❤️</h2>
+
+    <p id="poema"></p>
+
+    <h3>⏳ Tiempo juntos:</h3>
+    <p id="contador"></p>
+
+    <div class="choices">
+      <button class="btn btnPrimary" id="si">Sí 💘</button>
+      <button class="btn" id="no">No 😢</button>
+    </div>
+
+    <p id="final" style="margin-top:12px;"></p>
+
+    <button class="btn btnLight hidden" id="verMas">Ver más 📸</button>
+  </div>
+
+</div>
+
+<!-- MODAL GALERÍA -->
+<div id="modal" class="hidden">
+  <div id="modalContent">
+    <button id="cerrar" aria-label="Cerrar">✕</button>
+
+    <div id="slideBox">
+      <button id="prev" aria-label="Anterior">‹</button>
+      <img id="slideImg" src="" alt="Fotos de nosotros">
+      <button id="next" aria-label="Siguiente">›</button>
+    </div>
+
+    <div id="slideInfo">
+      <span id="slideCount"></span>
+      <button class="btn btnPrimary" id="auto">Auto ▶</button>
+    </div>
+  </div>
+</div>
+
+<audio id="musica" src="cancion.mp3" preload="auto"></audio>
+
+<script>
+  /* ======================
+     ESTRELLAS
+  ====================== */
+  for(let i=0;i<150;i++){
+    const s=document.createElement("div");
+    s.className="star";
+    s.style.top=Math.random()*100+"%";
+    s.style.left=Math.random()*100+"%";
+    s.style.animationDelay=(Math.random()*2)+"s";
+    document.body.appendChild(s);
+  }
+
+  /* ======================
+     CONFIG
+  ====================== */
+  const fechaInicio = new Date("2025-04-04T00:00:00-05:00"); // Perú
+  const poemaTexto = `Si el cielo apaga sus luceros
+y la noche aprende a callar,
+mi corazón seguirá buscándote
+como quien nace para naufragar.
+
+Porque amarte, Camila, es destino:
+un relámpago dulce y fatal…
+y aunque duela, yo elijo tu nombre
+como se elige el final.
+
+Si me pierdo, que sea en tus ojos;
+si me rompo, que sea por ti.
+Y si el mundo pregunta qué quiero…
+es quedarme: contigo, aquí.
+
+¿Quieres ser mi San Valentín? ❤️`;
+
+  /* ======================
+     ELEMENTOS
+  ====================== */
+  const login = document.getElementById("login");
+  const carta = document.getElementById("carta");
+  const codigoInput = document.getElementById("codigo");
+  const errorDiv = document.getElementById("error");
+  const btnEntrar = document.getElementById("btnEntrar");
+  const poemaEl = document.getElementById("poema");
+  const contadorEl = document.getElementById("contador");
+  const musica = document.getElementById("musica");
+  const btnSi = document.getElementById("si");
+  const btnNo = document.getElementById("no");
+  const finalEl = document.getElementById("final");
+  const verMas = document.getElementById("verMas");
+
+  /* ======================
+     UTIL
+  ====================== */
+  function limpiarCodigo(x){
+    return String(x).trim().replace(/[\/\-\s]/g,"");
+  }
+
+  /* ======================
+     MÚSICA SUAVE
+  ====================== */
+  function iniciarMusica(){
+    musica.volume = 0.05;
+    musica.currentTime = 0;
+
+    const p = musica.play();
+    if(p && p.catch) p.catch(()=>{});
+
+    const subir = setInterval(()=>{
+      if(musica.volume < 1){
+        musica.volume = Math.min(1, musica.volume + 0.03);
+      }else{
+        clearInterval(subir);
+      }
+    }, 500);
+  }
+
+  /* ======================
+     POEMA (typing)
+  ====================== */
+  function escribirPoema(){
+    poemaEl.textContent="";
+    let i=0;
+    const speed=28;
+    (function type(){
+      if(i<poemaTexto.length){
+        poemaEl.textContent += poemaTexto.charAt(i);
+        i++;
+        setTimeout(type, speed);
+      }
+    })();
+  }
+
+  /* ======================
+     CONTADOR EXACTO
+  ====================== */
+  let contadorStarted=false;
+  function iniciarContador(){
+    if(contadorStarted) return;
+    contadorStarted=true;
+
+    setInterval(()=>{
+      const ahora = new Date();
+      const diff = ahora - fechaInicio;
+
+      const dias = Math.floor(diff / 86400000);
+      const horas = Math.floor(diff / 3600000) % 24;
+      const minutos = Math.floor(diff / 60000) % 60;
+      const segundos = Math.floor(diff / 1000) % 60;
+
+      contadorEl.textContent = `${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos ❤️`;
+    },1000);
+  }
+
+  /* ======================
+     EFECTOS
+  ====================== */
+  let efectosStarted=false;
+  function iniciarEfectos(){
+    if(efectosStarted) return;
+    efectosStarted=true;
+
+    // corazones
+    setInterval(()=>{
+      const h=document.createElement("div");
+      h.className="heart";
+      h.textContent="💘";
+      h.style.left=Math.random()*100+"vw";
+      h.style.fontSize=(18+Math.random()*22)+"px";
+      h.style.animationDuration=(5+Math.random()*3)+"s";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(), 8500);
+    }, 650);
+
+    // pétalos
+    setInterval(()=>{
+      const p=document.createElement("div");
+      p.className="petal";
+      p.style.left=Math.random()*100+"vw";
+      p.style.animationDuration=(7+Math.random()*4)+"s";
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(), 12000);
+    }, 420);
+  }
+
+  function fuegos(){
+    for(let i=0;i<60;i++){
+      const f=document.createElement("div");
+      f.className="fire";
+      f.style.top=Math.random()*100+"vh";
+      f.style.left=Math.random()*100+"vw";
+      f.style.background = `hsl(${Math.random()*360}, 100%, 60%)`;
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(), 1000);
+    }
+  }
+
+  /* ======================
+     NO se escapa
+  ====================== */
+  function escaparNo(){
+    btnNo.style.position="fixed";
+    btnNo.style.top=(10 + Math.random()*75) + "vh";
+    btnNo.style.left=(5 + Math.random()*85) + "vw";
+  }
+  btnNo.addEventListener("mouseover", escaparNo);
+  btnNo.addEventListener("touchstart", (e)=>{
+    e.preventDefault();
+    escaparNo();
+  }, {passive:false});
+
+  /* ======================
+     LOGIN
+  ====================== */
+  function verificar(){
+    const limpio = limpiarCodigo(codigoInput.value);
+    if(limpio === "04042025"){
+      errorDiv.textContent = "";
+      login.classList.add("hidden");
+      carta.classList.remove("hidden");
+
+      // ✅ música inmediatamente al entrar
+      iniciarMusica();
+
+      escribirPoema();
+      iniciarContador();
+      iniciarEfectos();
+
+      // ✅ baja suave para que se vea la carta en celular
+      setTimeout(()=>{
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 200);
+    }else{
+      errorDiv.textContent = "Fecha incorrecta 💘 intenta otra vez";
+    }
+  }
+  document.getElementById("btnEntrar").addEventListener("click", verificar);
+  codigoInput.addEventListener("keydown", (e)=>{ if(e.key==="Enter") verificar(); });
+
+  /* ======================
+     SÍ
+  ====================== */
+  btnSi.addEventListener("click", ()=>{
+    finalEl.innerHTML =
+      `<div class="ring">💍</div>
+       <div style="margin-top:6px;">
+         Camila… <span class="glow">siempre</span> serás mi San Valentín ❤️<br>
+         En lo bueno, en lo difícil y en cada día que venga.<br><br>
+         — Tu <b>Chocolatin</b> 🍫❤️
+       </div>`;
+
+    fuegos();
+    verMas.classList.remove("hidden");
+  });
+
+  /* ======================
+     GALERÍA
+  ====================== */
+  const fotos = [
+    "fotos/1.jpg","fotos/2.jpg","fotos/3.jpg","fotos/4.jpg","fotos/5.jpg",
+    "fotos/6.jpg","fotos/7.jpg","fotos/8.jpg","fotos/9.jpg","fotos/10.jpg",
+    "fotos/11.jpg","fotos/12.jpg","fotos/13.jpg","fotos/14.jpg","fotos/15.jpg",
+    "fotos/16.jpg","fotos/17.jpg","fotos/18.jpg","fotos/19.jpg","fotos/20.jpg"
+  ];
+
+  const modal = document.getElementById("modal");
+  const cerrar = document.getElementById("cerrar");
+  const prev = document.getElementById("prev");
+  const next = document.getElementById("next");
+  const slideImg = document.getElementById("slideImg");
+  const slideCount = document.getElementById("slideCount");
+  const autoBtn = document.getElementById("auto");
+
+  let idx = 0;
+  let autoTimer = null;
+
+  function mostrarSlide(i){
+    idx = (i + fotos.length) % fotos.length;
+    slideImg.src = fotos[idx];
+    slideCount.textContent = `Foto ${idx+1} de ${fotos.length}`;
+  }
+  function abrirModal(){
+    modal.classList.remove("hidden");
+    mostrarSlide(idx);
+  }
+  function cerrarModal(){
+    modal.classList.add("hidden");
+    pararAuto();
+  }
+  function siguiente(){ mostrarSlide(idx + 1); }
+  function anterior(){ mostrarSlide(idx - 1); }
+
+  function iniciarAuto(){
+    pararAuto();
+    autoBtn.textContent = "Auto ⏸";
+    autoTimer = setInterval(siguiente, 2500);
+  }
+  function pararAuto(){
+    if(autoTimer){ clearInterval(autoTimer); autoTimer=null; }
+    autoBtn.textContent = "Auto ▶";
+  }
+
+  verMas.addEventListener("click", abrirModal);
+  cerrar.addEventListener("click", cerrarModal);
+  modal.addEventListener("click", (e)=>{ if(e.target === modal) cerrarModal(); });
+  next.addEventListener("click", siguiente);
+  prev.addEventListener("click", anterior);
+
+  autoBtn.addEventListener("click", ()=>{
+    if(autoTimer) pararAuto();
+    else iniciarAuto();
+  });
+
+  document.addEventListener("keydown", (e)=>{
+    if(modal.classList.contains("hidden")) return;
+    if(e.key === "Escape") cerrarModal();
+    if(e.key === "ArrowRight") siguiente();
+    if(e.key === "ArrowLeft") anterior();
+  });
+</script>
+
+</body>
+</html>
